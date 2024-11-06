@@ -11,9 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.practica09_almacenamientoconsqlite.databinding.FragmentParkFormBinding
 import com.google.android.material.textfield.TextInputEditText
-import org.w3c.dom.Text
 
-class HomeFragment : Fragment() {
+class ParkFormFragment : Fragment() {
 
     private var _binding: FragmentParkFormBinding? = null
 
@@ -37,8 +36,8 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this)[HomeViewModel::class.java]
+        val parkFormViewModel =
+            ViewModelProvider(this)[ParkFormViewModel::class.java]
 
         _binding = FragmentParkFormBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -57,7 +56,7 @@ class HomeFragment : Fragment() {
             Toast.makeText(activity, "Hello world", Toast.LENGTH_SHORT).show()
         }
 
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        parkFormViewModel.text.observe(viewLifecycleOwner) {
             //textView.text = it
         }
         return root
