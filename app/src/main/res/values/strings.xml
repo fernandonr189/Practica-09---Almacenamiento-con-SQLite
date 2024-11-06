@@ -19,4 +19,13 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="new_park_title">Nuevo parque</string>
+    <string name="park_name_input_hint">Nombre del parque</string>
+    <string name="park_size_hint">Tamaño del parque (hectareas)</string>
+    <string name="park_coordinates_long_hint">Longitud</string>
+    <string name="park_coordinates_lat_hint">Latitud</string>
+    <string name="register_park_button_text">Registrar</string>
+    <string name="find_park_button_text">Buscar</string>
+    <string name="edit_park_button_text">Editar</string>
+    <string name="delete_park_button_text">Eliminar</string>
 </resources>
