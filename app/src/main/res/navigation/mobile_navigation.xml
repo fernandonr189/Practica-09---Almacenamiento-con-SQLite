@@ -7,14 +7,14 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.practica09_almacenamientoconsqlite.activities.ui.home.ParkFormFragment"
-        android:label="@string/menu_home"
+        android:name="com.example.practica09_almacenamientoconsqlite.activities.ui.park_form.ParkFormFragment"
+        android:label="@string/menu_add_park"
         tools:layout="@layout/fragment_park_form" />
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.example.practica09_almacenamientoconsqlite.activities.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
+        android:name="com.example.practica09_almacenamientoconsqlite.activities.ui.parks_list.ParksListFragment"
+        android:label="@string/menu_parks_list"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment

@@ -16,8 +16,8 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_add_park">Añadir nuevo parque</string>
+    <string name="menu_parks_list">Parques</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="new_park_title">Nuevo parque</string>
     <string name="park_name_input_hint">Nombre del parque</string>

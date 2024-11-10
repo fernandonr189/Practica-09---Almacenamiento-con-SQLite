@@ -1,4 +1,4 @@
-package com.example.practica09_almacenamientoconsqlite.activities.ui.gallery
+package com.example.practica09_almacenamientoconsqlite.activities.ui.parks_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.practica09_almacenamientoconsqlite.databinding.FragmentGalleryBinding
 
-class GalleryFragment : Fragment() {
+class ParksListFragment : Fragment() {
 
 private var _binding: FragmentGalleryBinding? = null
   // This property is only valid between onCreateView and
@@ -21,14 +21,14 @@ private var _binding: FragmentGalleryBinding? = null
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
-    val galleryViewModel =
-            ViewModelProvider(this).get(GalleryViewModel::class.java)
+    val parksListViewModel =
+        ViewModelProvider(this)[ParksListViewModel::class.java]
 
     _binding = FragmentGalleryBinding.inflate(inflater, container, false)
     val root: View = binding.root
 
     val textView: TextView = binding.textGallery
-    galleryViewModel.text.observe(viewLifecycleOwner) {
+    parksListViewModel.text.observe(viewLifecycleOwner) {
       textView.text = it
     }
     return root

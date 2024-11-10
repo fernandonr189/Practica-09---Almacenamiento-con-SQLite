@@ -1,4 +1,4 @@
-package com.example.practica09_almacenamientoconsqlite.activities.ui.home
+package com.example.practica09_almacenamientoconsqlite.activities.ui.park_form
 
 import android.os.Bundle
 import android.view.LayoutInflater
