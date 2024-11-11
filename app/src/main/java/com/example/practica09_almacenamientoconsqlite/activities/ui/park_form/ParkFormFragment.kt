@@ -64,22 +64,24 @@ class ParkFormFragment : Fragment() {
         deleteParkButton = binding.deleteParkButton
 
         deleteParkButton.setOnClickListener {
-            if(!isEditing) {
+            if (!isEditing) {
                 deleteParkFromDb()
-            }
-            else {
-                Toast.makeText(requireActivity(), "Termine de editar antes de eliminar!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    requireActivity(),
+                    "Termine de editar antes de eliminar!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
         editParkButton.setOnClickListener {
-            if(!parkNameInput.text.isNullOrEmpty()) {
-                if(isEditing && validateForm()) {
+            if (!parkNameInput.text.isNullOrEmpty()) {
+                if (isEditing && validateForm()) {
                     updatePark()
-                }
-                else {
+                } else {
                     val parkId = findParkFromDb(true)
-                    if(parkId != -1) {
+                    if (parkId != -1) {
                         editingId = parkId
                         isEditing = true
                         editParkButton.setText("Actualizar")
@@ -87,32 +89,44 @@ class ParkFormFragment : Fragment() {
                 }
             }
         }
-        
+
         registerParkButton.setOnClickListener {
-            if(validateForm()) {
-                if(!isEditing) {
+            if (validateForm()) {
+                if (!isEditing) {
                     addParkToDb()
+                } else {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Para evitar duplicados, termine de editar antes de agregar un nuevo parque",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                else {
-                    Toast.makeText(requireActivity(), "Para evitar duplicados, termine de editar antes de agregar un nuevo parque", Toast.LENGTH_SHORT).show()
-                }
-            }
-            else {
-                Toast.makeText(requireActivity(), "Por favor completa el formulario", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    requireActivity(),
+                    "Por favor completa el formulario",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
         findParkButton.setOnClickListener {
-            if(!parkNameInput.text.isNullOrEmpty()) {
-                if(!isEditing) {
+            if (!parkNameInput.text.isNullOrEmpty()) {
+                if (!isEditing) {
                     findParkFromDb(true)
+                } else {
+                    Toast.makeText(
+                        requireActivity(),
+                        "Termine de editar antes de buscar otro parque!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-                else {
-                    Toast.makeText(requireActivity(), "Termine de editar antes de buscar otro parque!", Toast.LENGTH_SHORT).show()
-                }
-            }
-            else {
-                Toast.makeText(activity, "Por favor ingrese un nombre para buscar", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(
+                    activity,
+                    "Por favor ingrese un nombre para buscar",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -133,8 +147,14 @@ class ParkFormFragment : Fragment() {
         val values = ContentValues().apply {
             put(ParkContract.ParkEntry.COLUMN_NAME_NAME, parkNameInput.text.toString())
             put(ParkContract.ParkEntry.COLUMN_NAME_SIZE, parkSizeInput.text.toString().toDouble())
-            put(ParkContract.ParkEntry.COLUMN_NAME_LATITUDE, parkLatitudeInput.text.toString().toDouble())
-            put(ParkContract.ParkEntry.COLUMN_NAME_LONGITUDE, parkLongitudeInput.text.toString().toDouble())
+            put(
+                ParkContract.ParkEntry.COLUMN_NAME_LATITUDE,
+                parkLatitudeInput.text.toString().toDouble()
+            )
+            put(
+                ParkContract.ParkEntry.COLUMN_NAME_LONGITUDE,
+                parkLongitudeInput.text.toString().toDouble()
+            )
         }
 
         val selection = "${BaseColumns._ID} LIKE ?"
@@ -153,7 +173,7 @@ class ParkFormFragment : Fragment() {
 
     private fun deleteParkFromDb() {
         val parkId = findParkFromDb(false)
-        if(parkId != -1) {
+        if (parkId != -1) {
             val db = dbHelper.writableDatabase
             val selection = "${BaseColumns._ID} LIKE ?"
             val selectionArgs = arrayOf(parkId.toString())
@@ -163,21 +183,23 @@ class ParkFormFragment : Fragment() {
         }
     }
 
-    private fun validateForm() : Boolean {
+    private fun validateForm(): Boolean {
         return !(parkNameInput.text.isNullOrEmpty() ||
                 parkSizeInput.text.isNullOrEmpty() ||
                 parkLatitudeInput.text.isNullOrEmpty() ||
                 parkLongitudeInput.text.isNullOrEmpty())
     }
 
-    private fun findParkFromDb(printInForm: Boolean) : Int {
+    private fun findParkFromDb(printInForm: Boolean): Int {
         val db = dbHelper.readableDatabase
 
-        val projection = arrayOf(BaseColumns._ID,
+        val projection = arrayOf(
+            BaseColumns._ID,
             ParkContract.ParkEntry.COLUMN_NAME_NAME,
             ParkContract.ParkEntry.COLUMN_NAME_LONGITUDE,
             ParkContract.ParkEntry.COLUMN_NAME_LATITUDE,
-            ParkContract.ParkEntry.COLUMN_NAME_SIZE)
+            ParkContract.ParkEntry.COLUMN_NAME_SIZE
+        )
         val selection = "${ParkContract.ParkEntry.COLUMN_NAME_NAME} = ?"
         val selectionArgs = arrayOf(parkNameInput.text.toString())
         val sortOrder = "${ParkContract.ParkEntry.COLUMN_NAME_NAME} DESC"
@@ -205,9 +227,9 @@ class ParkFormFragment : Fragment() {
             }
         }
         cursor.close()
-        if(parks.size > 0) {
+        if (parks.size > 0) {
             val park = parks[0]
-            if(printInForm) {
+            if (printInForm) {
                 with(park) {
                     parkNameInput.setText(parkName)
                     parkSizeInput.setText(String.format(size.toString()))
@@ -216,8 +238,7 @@ class ParkFormFragment : Fragment() {
                 }
             }
             return park.id
-        }
-        else {
+        } else {
             Toast.makeText(activity, "Parque no encontrado", Toast.LENGTH_SHORT).show()
         }
         return -1
@@ -228,8 +249,14 @@ class ParkFormFragment : Fragment() {
         val values = ContentValues().apply {
             put(ParkContract.ParkEntry.COLUMN_NAME_NAME, parkNameInput.text.toString())
             put(ParkContract.ParkEntry.COLUMN_NAME_SIZE, parkSizeInput.text.toString().toDouble())
-            put(ParkContract.ParkEntry.COLUMN_NAME_LONGITUDE, parkLongitudeInput.text.toString().toDouble())
-            put(ParkContract.ParkEntry.COLUMN_NAME_LATITUDE, parkLatitudeInput.text.toString().toDouble())
+            put(
+                ParkContract.ParkEntry.COLUMN_NAME_LONGITUDE,
+                parkLongitudeInput.text.toString().toDouble()
+            )
+            put(
+                ParkContract.ParkEntry.COLUMN_NAME_LATITUDE,
+                parkLatitudeInput.text.toString().toDouble()
+            )
         }
         db.insert(ParkContract.ParkEntry.TABLE_NAME, null, values)
     }
