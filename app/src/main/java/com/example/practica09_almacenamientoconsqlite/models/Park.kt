@@ -1,6 +1,6 @@
 package com.example.practica09_almacenamientoconsqlite.models
 
-class park(
+class Park(
     var parkName: String,
     val id: Int,
     var longitude: Double,
