@@ -1,9 +1,11 @@
 package com.example.practica09_almacenamientoconsqlite.activities.ui.parks_list
 
 import android.os.Bundle
+import android.provider.BaseColumns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.practica09_almacenamientoconsqlite.adapters.ParksRecyclerAdapter
 import com.example.practica09_almacenamientoconsqlite.databinding.FragmentParkListBinding
 import com.example.practica09_almacenamientoconsqlite.models.Park
+import com.example.practica09_almacenamientoconsqlite.sql.ParkContract
+import com.example.practica09_almacenamientoconsqlite.sql.ParksDbHelper
 
 class ParksListFragment : Fragment() {
 
@@ -21,7 +25,8 @@ class ParksListFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var recyclerView: RecyclerView
     private var parkList: MutableList<Park> = ArrayList()
-    private var recyclerAdapter: ParksRecyclerAdapter = ParksRecyclerAdapter(parkList)
+    private lateinit var recyclerAdapter: ParksRecyclerAdapter
+    private lateinit var dbHelper: ParksDbHelper
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,12 +35,11 @@ class ParksListFragment : Fragment() {
     ): View {
         val parksListViewModel =
             ViewModelProvider(this)[ParksListViewModel::class.java]
+        dbHelper = ParksDbHelper(requireActivity().baseContext)
 
-        parkList.add(Park("Colomos", 1, 123.0, 133.0, 123.0))
-        parkList.add(Park("Colomos 2", 1, 123.0, 133.0, 123.0))
-        parkList.add(Park("Colomos 3", 1, 123.0, 133.0, 123.0))
-        parkList.add(Park("Colomos 4", 1, 123.0, 133.0, 123.0))
-        parkList.add(Park("Colomos 5", 1, 123.0, 133.0, 123.0))
+
+        parkList = getParksFromDb()
+        recyclerAdapter = ParksRecyclerAdapter(parkList)
 
         _binding = FragmentParkListBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -48,6 +52,27 @@ class ParksListFragment : Fragment() {
             //textView.text = it
         }
         return root
+    }
+
+    private fun getParksFromDb() : MutableList<Park>{
+        val db = dbHelper.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM ${ParkContract.ParkEntry.TABLE_NAME}", null)
+        val parks = mutableListOf<Park>()
+        with(cursor) {
+            while (moveToNext()) {
+                println("found")
+                val foundPark = Park(
+                    getString(getColumnIndexOrThrow(ParkContract.ParkEntry.COLUMN_NAME_NAME)),
+                    getInt(getColumnIndexOrThrow(BaseColumns._ID)),
+                    getDouble(getColumnIndexOrThrow(ParkContract.ParkEntry.COLUMN_NAME_LONGITUDE)),
+                    getDouble(getColumnIndexOrThrow(ParkContract.ParkEntry.COLUMN_NAME_LATITUDE)),
+                    getDouble(getColumnIndexOrThrow(ParkContract.ParkEntry.COLUMN_NAME_SIZE))
+                )
+                parks.add(foundPark)
+            }
+        }
+        cursor.close()
+        return parks
     }
 
     override fun onDestroyView() {
