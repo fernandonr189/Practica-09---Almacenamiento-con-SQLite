@@ -22,4 +22,10 @@
         android:name="com.example.practica09_almacenamientoconsqlite.activities.ui.ranger_form.RangerFormFragment"
         android:label="@string/menu_add_ranger"
         tools:layout="@layout/fragment_ranger_form" />
+
+    <fragment
+        android:id="@+id/nav_ranger_list_fragment"
+        android:name="com.example.practica09_almacenamientoconsqlite.activities.ui.ranger_list.RangerListFragment"
+        android:label="@string/menu_ranger_list"
+        tools:layout="@layout/fragment_park_list" />
 </navigation>

@@ -19,6 +19,7 @@
     <string name="menu_add_park">Añadir nuevo parque</string>
     <string name="menu_parks_list">Parques</string>
     <string name="menu_add_ranger">Añadir nuevo guardabosques</string>
+    <string name="menu_ranger_list">Guardabosques</string>
     <string name="new_park_title">Nuevo parque</string>
     <string name="park_name_input_hint">Nombre del parque</string>
     <string name="park_size_hint">Tamaño del parque (hectareas)</string>
