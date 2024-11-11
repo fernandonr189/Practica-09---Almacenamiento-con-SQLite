@@ -12,7 +12,6 @@
             android:title="Lista de parques" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/menu_add_ranger" />
     </group>
 </menu>
