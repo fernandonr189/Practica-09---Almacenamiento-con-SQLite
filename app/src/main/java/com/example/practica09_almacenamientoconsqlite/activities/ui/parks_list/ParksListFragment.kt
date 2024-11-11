@@ -7,34 +7,51 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.practica09_almacenamientoconsqlite.databinding.FragmentGalleryBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.practica09_almacenamientoconsqlite.adapters.ParksRecyclerAdapter
+import com.example.practica09_almacenamientoconsqlite.databinding.FragmentParkListBinding
+import com.example.practica09_almacenamientoconsqlite.models.park
 
 class ParksListFragment : Fragment() {
 
-private var _binding: FragmentGalleryBinding? = null
-  // This property is only valid between onCreateView and
-  // onDestroyView.
-  private val binding get() = _binding!!
+    private var _binding: FragmentParkListBinding? = null
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    val parksListViewModel =
-        ViewModelProvider(this)[ParksListViewModel::class.java]
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+    private lateinit var recyclerView: RecyclerView
+    private var parkList: MutableList<park> = ArrayList()
+    private var recyclerAdapter: ParksRecyclerAdapter = ParksRecyclerAdapter(parkList)
 
-    _binding = FragmentGalleryBinding.inflate(inflater, container, false)
-    val root: View = binding.root
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val parksListViewModel =
+            ViewModelProvider(this)[ParksListViewModel::class.java]
 
-    val textView: TextView = binding.textGallery
-    parksListViewModel.text.observe(viewLifecycleOwner) {
-      textView.text = it
+        parkList.add(park("Colomos", 1, 123.0, 133.0, 123.0))
+        parkList.add(park("Colomos 2", 1, 123.0, 133.0, 123.0))
+        parkList.add(park("Colomos 3", 1, 123.0, 133.0, 123.0))
+        parkList.add(park("Colomos 4", 1, 123.0, 133.0, 123.0))
+        parkList.add(park("Colomos 5", 1, 123.0, 133.0, 123.0))
+
+        _binding = FragmentParkListBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
+        recyclerView = binding.parksListRecycler
+        recyclerView.adapter = recyclerAdapter
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+
+        parksListViewModel.text.observe(viewLifecycleOwner) {
+            //textView.text = it
+        }
+        return root
     }
-    return root
-  }
 
-override fun onDestroyView() {
+    override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
