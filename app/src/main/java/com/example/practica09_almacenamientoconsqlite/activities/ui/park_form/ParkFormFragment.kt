@@ -36,6 +36,9 @@ class ParkFormFragment : Fragment() {
     private lateinit var deleteParkButton: Button
     private lateinit var dbHelper: ParksDbHelper
 
+    private var isEditing = false
+    private var editingId = -1
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,12 +64,38 @@ class ParkFormFragment : Fragment() {
         deleteParkButton = binding.deleteParkButton
 
         deleteParkButton.setOnClickListener {
-            deleteParkFromDb()
+            if(!isEditing) {
+                deleteParkFromDb()
+            }
+            else {
+                Toast.makeText(requireActivity(), "Termine de editar antes de eliminar!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        editParkButton.setOnClickListener {
+            if(!parkNameInput.text.isNullOrEmpty()) {
+                if(isEditing && validateForm()) {
+                    updatePark()
+                }
+                else {
+                    val parkId = findParkFromDb(true)
+                    if(parkId != -1) {
+                        editingId = parkId
+                        isEditing = true
+                        editParkButton.setText("Actualizar")
+                    }
+                }
+            }
         }
         
-        registerParkButton.setOnClickListener { 
+        registerParkButton.setOnClickListener {
             if(validateForm()) {
-                addParkToDb()
+                if(!isEditing) {
+                    addParkToDb()
+                }
+                else {
+                    Toast.makeText(requireActivity(), "Para evitar duplicados, termine de editar antes de agregar un nuevo parque", Toast.LENGTH_SHORT).show()
+                }
             }
             else {
                 Toast.makeText(requireActivity(), "Por favor completa el formulario", Toast.LENGTH_SHORT).show()
@@ -75,7 +104,12 @@ class ParkFormFragment : Fragment() {
 
         findParkButton.setOnClickListener {
             if(!parkNameInput.text.isNullOrEmpty()) {
-                findParkFromDb(true)
+                if(!isEditing) {
+                    findParkFromDb(true)
+                }
+                else {
+                    Toast.makeText(requireActivity(), "Termine de editar antes de buscar otro parque!", Toast.LENGTH_SHORT).show()
+                }
             }
             else {
                 Toast.makeText(activity, "Por favor ingrese un nombre para buscar", Toast.LENGTH_SHORT).show()
@@ -86,6 +120,28 @@ class ParkFormFragment : Fragment() {
             //textView.text = it
         }
         return root
+    }
+
+    private fun resetEditButton() {
+        isEditing = false
+        editingId = -1
+        editParkButton.setText("Editar")
+    }
+
+    private fun updatePark() {
+        val db = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put(ParkContract.ParkEntry.COLUMN_NAME_NAME, parkNameInput.text.toString())
+            put(ParkContract.ParkEntry.COLUMN_NAME_SIZE, parkSizeInput.text.toString().toDouble())
+            put(ParkContract.ParkEntry.COLUMN_NAME_LATITUDE, parkLatitudeInput.text.toString().toDouble())
+            put(ParkContract.ParkEntry.COLUMN_NAME_LONGITUDE, parkLongitudeInput.text.toString().toDouble())
+        }
+
+        val selection = "${BaseColumns._ID} LIKE ?"
+        val selectionArgs = arrayOf(editingId.toString())
+        db.update(ParkContract.ParkEntry.TABLE_NAME, values, selection, selectionArgs)
+        resetEditButton()
+        clearForm()
     }
 
     private fun clearForm() {
@@ -152,10 +208,12 @@ class ParkFormFragment : Fragment() {
         if(parks.size > 0) {
             val park = parks[0]
             if(printInForm) {
-                parkNameInput.setText(park.parkName)
-                parkSizeInput.setText(park.size.toString())
-                parkLatitudeInput.setText(park.latitude.toString())
-                parkLongitudeInput.setText(park.longitude.toString())
+                with(park) {
+                    parkNameInput.setText(parkName)
+                    parkSizeInput.setText(String.format(size.toString()))
+                    parkLatitudeInput.setText(String.format(latitude.toString()))
+                    parkLongitudeInput.setText(String.format(longitude.toString()))
+                }
             }
             return park.id
         }
