@@ -1,10 +1,10 @@
-package com.example.practica09_almacenamientoconsqlite.activities.ui.slideshow
+package com.example.practica09_almacenamientoconsqlite.activities.ui.ranger_form
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class SlideshowViewModel : ViewModel() {
+class RangerFormViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is slideshow Fragment"
