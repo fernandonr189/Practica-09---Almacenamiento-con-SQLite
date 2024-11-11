@@ -217,8 +217,14 @@ class RangerFormFragment : Fragment() {
                     rangerAgeInput.setText(age.toString())
                     rangerTenureInput.setText(tenure.toString())
                     when (gender) {
-                        "Masculino" -> rangerGenderMaleCheckBox.isChecked = true
-                        "Femenino" -> rangerGenderFemaleCheckBox.isChecked = true
+                        "Masculino" -> {
+                            rangerGenderMaleCheckBox.isChecked = true
+                            selectedGender = "Masculino"
+                        }
+                        "Femenino" -> {
+                            rangerGenderFemaleCheckBox.isChecked = true
+                            selectedGender = "Femenino"
+                        }
                     }
                 }
             }

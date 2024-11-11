@@ -22,9 +22,9 @@ class RangersRecyclerAdapter(rangers: MutableList<Ranger>) :
         fun bind(ranger: Ranger) {
             with(ranger) {
                 rangerName.setText(name)
-                rangerAge.setText(age.toString())
-                rangerTenure.setText(tenure.toString())
-                rangerGender.setText(gender)
+                rangerAge.setText(String.format("Edad: ${age.toString()} años"))
+                rangerTenure.setText(String.format("Antiguedad: ${tenure.toString()} año(s)"))
+                rangerGender.setText(String.format("Genero: ${gender}"))
             }
         }
     }
