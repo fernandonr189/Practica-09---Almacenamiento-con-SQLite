@@ -28,4 +28,10 @@
         android:name="com.example.practica09_almacenamientoconsqlite.activities.ui.ranger_list.RangerListFragment"
         android:label="@string/menu_ranger_list"
         tools:layout="@layout/fragment_park_list" />
+
+    <fragment
+        android:id="@+id/nav_logout_fragment"
+        android:name="com.example.practica09_almacenamientoconsqlite.activities.ui.logout.LogoutFragment"
+        android:label="Cerrar sesion"
+        tools:layout="@layout/fragment_logout" />
 </navigation>
